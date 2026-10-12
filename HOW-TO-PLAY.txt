@@ -1,4 +1,4 @@
-TCZ Ground Game V2.2 (offline) - Level 1 Kane, PA -> Level 2 Bradford, PA
+TCZ Ground Game V2.2.1 (offline) - Level 1 Kane, PA -> Level 2 Bradford, PA
 1. Double-click index.html (opens in Safari or Chrome). No internet or server needed.
    Or double-click "Open TCZ Ground Game.app" (first time: right-click > Open if macOS warns).
 2. Click the map, then walk Kane's streets with Arrow keys or WASD (hold to keep walking).

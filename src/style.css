@@ -59,3 +59,12 @@ main{flex:1 1 auto;min-height:0;flex-wrap:nowrap;overflow:hidden}
   .dpad{grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,40px)}.ebtn{width:60px;height:60px}
   html.pad-on #hint{display:none}
 }
+
+/* ---- V2.2.1: inner scrollers never chain to the embedding page; wide visible scrollbar ---- */
+html,body{overscroll-behavior:none}
+#side,.found,#duel,textarea,#levels{overscroll-behavior:contain}
+#side,#duel,.found{scrollbar-width:auto;scrollbar-color:#8a7440 #0b140e}
+#side::-webkit-scrollbar,#duel::-webkit-scrollbar,.found::-webkit-scrollbar{width:14px}
+#side::-webkit-scrollbar-track,#duel::-webkit-scrollbar-track,.found::-webkit-scrollbar-track{background:#0b140e;border-left:1px solid var(--line)}
+#side::-webkit-scrollbar-thumb,#duel::-webkit-scrollbar-thumb,.found::-webkit-scrollbar-thumb{background:#8a7440;border:3px solid #0b140e;border-radius:8px;min-height:40px}
+#side::-webkit-scrollbar-thumb:hover,#duel::-webkit-scrollbar-thumb:hover,.found::-webkit-scrollbar-thumb:hover{background:var(--lamp)}
