@@ -1,0 +1,22 @@
+<!-- TCZ Ground Game V2.2: paste into a WordPress "Custom HTML" block. Height auto-fits via postMessage; clamped 560-900 px. -->
+<div class="tcz-gg-wrap" style="max-width:1200px;margin:0 auto;">
+  <iframe id="tcz-ground-game"
+    src="https://11cambrose.github.io/tcz-ground-game-play/"
+    title="TCZ Ground Game"
+    style="display:block;width:100%;height:min(820px,calc(100vh - 80px));min-height:560px;border:0;border-radius:6px;background:#0d1611;"
+    allow="fullscreen" allowfullscreen loading="lazy"></iframe>
+</div>
+<script>
+(function () {
+  var MIN = 560, MAX = 900;
+  var f = document.getElementById('tcz-ground-game');
+  window.addEventListener('message', function (e) {
+    if (e.origin !== 'https://11cambrose.github.io') return;
+    if (!f || e.source !== f.contentWindow) return;
+    var h = e.data && Number(e.data.tczHeight);
+    if (!isFinite(h) || h <= 0) return;
+    var cap = Math.min(MAX, Math.max(MIN, window.innerHeight - 80));
+    f.style.height = Math.min(MAX, Math.max(MIN, Math.min(h, cap))) + 'px';
+  });
+})();
+</script>

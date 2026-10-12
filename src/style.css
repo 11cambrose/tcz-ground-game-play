@@ -28,3 +28,34 @@ button{cursor:pointer}button:hover{border-color:var(--lamp)}.danger{border-color
 @keyframes cin{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
 #cineOverlay{position:absolute;inset:0;background:#000c;display:flex;align-items:center;justify-content:center}#cineOverlay[hidden]{display:none}
 .cine-full{font:bold 32px Helvetica,Arial,sans-serif;color:var(--lamp);letter-spacing:2px}
+
+/* ---- V2.2: fit the viewport (no page scroll), responsive, on-screen pad ---- */
+html,body{height:100%;overflow:hidden}body{height:100vh;height:100dvh}
+#app{height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+header{flex:none;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.hbtns{margin-left:auto;display:flex;gap:6px}.hbtns button{font-size:12px;padding:3px 8px}
+main{flex:1 1 auto;min-height:0;flex-wrap:nowrap;overflow:hidden}
+#world{flex:1 1 auto;min-width:0;width:auto;display:flex;flex-direction:column;min-height:0}
+#map{width:100%;height:auto;max-height:calc(100% - 40px);aspect-ratio:672/384;object-fit:contain;max-width:calc((100dvh - 120px) * 1.75)}
+#hint{flex:none}
+#side{flex:none;width:330px;overflow-y:auto;min-height:0;overscroll-behavior:contain}
+#pad{position:relative;flex:none;margin-top:6px;z-index:5;display:flex;justify-content:space-between;align-items:flex-end;padding:0 10px;pointer-events:none}#pad[hidden]{display:none}
+#pad button{pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;background:#000a;border:2px solid var(--lamp);color:var(--lamp);border-radius:10px;font-size:20px;padding:0}
+#pad button.on{background:var(--lamp);color:#000}
+.dpad{display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(3,48px);gap:4px}.dpad .u{grid-area:1/2}.dpad .l{grid-area:2/1}.dpad .r{grid-area:2/3}.dpad .d{grid-area:3/2}
+.ebtn{width:68px;height:68px;border-radius:50%!important;font-weight:bold;line-height:1}.ebtn small{font-size:10px}
+/* modal fits: max-height + inner scroll, board sized to min(vw,vh) */
+#modal{padding:8px;z-index:20}
+#duel{width:auto;max-width:min(96vw,560px);max-height:calc(100dvh - 16px);max-height:calc(100vh - 16px);overflow:auto;padding:10px}
+@supports (height:100dvh){#duel{max-height:calc(100dvh - 16px)}}
+#duel{--sq:min(48px,calc((min(100vw,100dvh) - 200px) / 8));--sq:min(48px,max(30px,calc((min(100vw,100dvh) - 200px) / 8)))}
+#board{grid-template-columns:repeat(8,var(--sq));grid-template-rows:repeat(8,var(--sq));width:calc(var(--sq) * 8 + 4px)}
+.sq{font-size:calc(var(--sq) * .7)}#duelHead{min-height:0}
+/* narrow / phone: stack, side panel becomes a scrollable drawer below the map */
+@media (max-width:820px){
+  main{flex-direction:column;padding:6px;gap:6px}
+  #world{flex:none}#map{max-width:100%;max-height:none}
+  #side{width:auto;flex:1 1 auto}
+  #hint{font-size:11px}header{padding:6px 10px;font-size:14px}header .dim{display:none}
+  .dpad{grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,40px)}.ebtn{width:60px;height:60px}
+  html.pad-on #hint{display:none}
+}

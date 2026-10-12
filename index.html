@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>[TCZ] Ground Game V2.1</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[TCZ] Ground Game V2.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
-<header><b>[TCZ] Ground Game</b> <span class="dim">V2.1 · 64-level road from Kane, PA · offline</span></header>
+<div id="app">
+<header><b>[TCZ] Ground Game</b> <span class="dim">V2.2 · 64-level road from Kane, PA · offline</span><span class="hbtns"><button id="padToggle" title="Show/hide on-screen controls">🎮 Pad</button><button id="fsToggle" title="Fullscreen">⛶ Full</button></span></header>
 <main>
   <section id="world">
     <canvas id="map" width="672" height="384" tabindex="0" aria-label="Walkable map"></canvas>
@@ -15,6 +16,10 @@
     <div id="toast"></div>
     <div id="cineCards" aria-live="polite"></div>
     <div id="cineOverlay" hidden></div>
+    <div id="pad" hidden aria-label="On-screen controls">
+      <div class="dpad"><button data-key="ArrowUp" class="u" aria-label="Up">▲</button><button data-key="ArrowLeft" class="l" aria-label="Left">◀</button><button data-key="ArrowRight" class="r" aria-label="Right">▶</button><button data-key="ArrowDown" class="d" aria-label="Down">▼</button></div>
+      <button data-key="KeyE" class="ebtn" aria-label="Sit / play (E)">E<br><small>play</small></button>
+    </div>
   </section>
   <aside id="side">
     <div class="card" id="wallets"></div>
@@ -40,6 +45,7 @@
     <details class="card"><summary>64 world-levels</summary><ol id="levels"></ol></details>
   </aside>
 </main>
+</div>
 <div id="modal" hidden>
   <div id="duel">
     <div id="duelHead"></div>
@@ -66,5 +72,6 @@
 <script src="src/characters.js"></script>
 <script src="src/placement.js"></script>
 <script src="src/game.js"></script>
+<script src="src/controls.js"></script>
 </body>
 </html>

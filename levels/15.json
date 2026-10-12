@@ -1,0 +1,37 @@
+{
+  "schema": "tcz.level.v1",
+  "level": 15,
+  "id": "L15",
+  "status": "open",
+  "town": null,
+  "scale_note": null,
+  "world_id": null,
+  "data_file": null,
+  "bbox": null,
+  "tile_meters": null,
+  "seats": {
+    "villains": 21,
+    "masters": 7,
+    "registry_days": [
+      393,
+      420
+    ]
+  },
+  "shrines": [],
+  "gate": {
+    "opens_when": [
+      "void",
+      "chronos"
+    ]
+  },
+  "closer_seed_id": "L15-M07",
+  "landmark_picks": null,
+  "unlock": {
+    "requires_item": "travel-element-l15",
+    "from_level": 14
+  },
+  "reward_on_closer": {
+    "item": "travel-element-l16"
+  },
+  "to_define": "see docs/LEVELS-01-16.md"
+}
