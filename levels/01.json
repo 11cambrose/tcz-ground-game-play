@@ -1,0 +1,30 @@
+{
+  "schema": "tcz.level.v1",
+  "level": 1,
+  "id": "L01",
+  "status": "playable",
+  "town": "Kane, PA",
+  "scale_note": "small town core, ~3.4 km2 box",
+  "world_id": "kane-pa-core",
+  "data_file": "data/world/kane.js",
+  "osm_source": "data/osm/kane-core.osm.xml",
+  "region": "data/regions/nwpa-kane-region.geojson",
+  "bbox": [-78.8250, 41.6560, -78.7980, 41.6700],
+  "tile_meters": 4,
+  "seats": { "villains": 21, "masters": 7, "registry_days": [1, 28] },
+  "shrines": [
+    { "key": "void", "seed_id": "L01-V02", "name": "Void Shrine", "teaches": "Develop. Do not raid the queen.", "ability": null },
+    { "key": "chronos", "seed_id": "L01-V03", "name": "Chronos Shrine", "teaches": "Need the pawn, not the loop.",
+      "ability": { "id": "chronos_knight_drop", "trigger": "White's 8th move", "effect": "plant_knight_empty_dark_square", "sentence": "At White's 8th move, Chronos plants a knight on an empty dark square." } }
+  ],
+  "gate": { "opens_when": ["void", "chronos"] },
+  "closer_seed_id": "L01-M07",
+  "landmark_picks": {
+    "spawn":   { "kinds": ["library", "townhall", "post_office"], "prefer": ["Friends Memorial Public Library"] },
+    "void":    { "kinds": ["park", "playground"], "prefer": ["Evergreen Park"] },
+    "chronos": { "kinds": ["historic", "museum", "clock", "monument", "memorial"], "name_hint": ["histor", "museum", "clock"], "prefer": ["Kane Historical Preservation Society"] },
+    "closer":  { "kinds": ["community_centre", "townhall", "theatre", "arts_centre"], "prefer": ["Kane Area Community Center"] }
+  },
+  "unlock": null,
+  "reward_on_closer": { "item": "ticket-bus-kane-bradford" }
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "tcz.level.v1",
+  "level": 8,
+  "id": "L08",
+  "status": "candidate",
+  "town": "Toronto, ON (core) or Chicago Loop + lakefront",
+  "scale_note": "~450 km2",
+  "world_id": null,
+  "data_file": null,
+  "bbox": null,
+  "tile_meters": 8,
+  "seats": {
+    "villains": 21,
+    "masters": 7,
+    "registry_days": [
+      197,
+      224
+    ]
+  },
+  "shrines": [],
+  "gate": {
+    "opens_when": [
+      "void",
+      "chronos"
+    ]
+  },
+  "closer_seed_id": "L08-M07",
+  "landmark_picks": null,
+  "unlock": {
+    "requires_item": "ticket-air-l8",
+    "from_level": 7
+  },
+  "reward_on_closer": {
+    "item": "travel-element-l9"
+  },
+  "feasibility": "Streamed tiles; probably voxel/GIS provider"
+}

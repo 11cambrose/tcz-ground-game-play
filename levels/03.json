@@ -1,0 +1,42 @@
+{
+  "schema": "tcz.level.v1",
+  "level": 3,
+  "id": "L03",
+  "status": "candidate",
+  "town": "Warren, PA",
+  "scale_note": "almost-medium town; river city, ~14 km2 core",
+  "world_id": null,
+  "data_file": null,
+  "bbox": [
+    -79.18,
+    41.83,
+    -79.11,
+    41.86
+  ],
+  "tile_meters": 4,
+  "seats": {
+    "villains": 21,
+    "masters": 7,
+    "registry_days": [
+      57,
+      84
+    ]
+  },
+  "shrines": [],
+  "gate": {
+    "opens_when": [
+      "void",
+      "chronos"
+    ]
+  },
+  "closer_seed_id": "L03-M07",
+  "landmark_picks": null,
+  "unlock": {
+    "requires_item": "pass-rail-l3",
+    "from_level": 2
+  },
+  "reward_on_closer": {
+    "item": "ticket-intercity-bus-l4"
+  },
+  "feasibility": "Outside both supplied polygons: needs a new region polygon"
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "tcz.level.v1",
+  "level": 7,
+  "id": "L07",
+  "status": "candidate",
+  "town": "Cleveland, OH + lakefront",
+  "scale_note": "~220 km2 metro slice",
+  "world_id": null,
+  "data_file": null,
+  "bbox": null,
+  "tile_meters": 8,
+  "seats": {
+    "villains": 21,
+    "masters": 7,
+    "registry_days": [
+      169,
+      196
+    ]
+  },
+  "shrines": [],
+  "gate": {
+    "opens_when": [
+      "void",
+      "chronos"
+    ]
+  },
+  "closer_seed_id": "L07-M07",
+  "landmark_picks": null,
+  "unlock": {
+    "requires_item": "pass-ferry-l7",
+    "from_level": 6
+  },
+  "reward_on_closer": {
+    "item": "ticket-air-l8"
+  },
+  "feasibility": "Streamed vector tiles; 8\u201316 m tiles"
+}

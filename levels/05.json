@@ -1,0 +1,37 @@
+{
+  "schema": "tcz.level.v1",
+  "level": 5,
+  "id": "L05",
+  "status": "candidate",
+  "town": "Buffalo, NY (downtown)",
+  "scale_note": "~55 km2 core",
+  "world_id": null,
+  "data_file": null,
+  "bbox": null,
+  "tile_meters": 8,
+  "seats": {
+    "villains": 21,
+    "masters": 7,
+    "registry_days": [
+      113,
+      140
+    ]
+  },
+  "shrines": [],
+  "gate": {
+    "opens_when": [
+      "void",
+      "chronos"
+    ]
+  },
+  "closer_seed_id": "L05-M07",
+  "landmark_picks": null,
+  "unlock": {
+    "requires_item": "pass-rail-l5",
+    "from_level": 4
+  },
+  "reward_on_closer": {
+    "item": "ticket-regional-air-l6"
+  },
+  "feasibility": "Chunked/streamed tiles required"
+}

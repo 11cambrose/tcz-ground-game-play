@@ -1,0 +1,30 @@
+{
+  "schema": "tcz.level.v1",
+  "level": 2,
+  "id": "L02",
+  "status": "playable",
+  "town": "Bradford, PA",
+  "scale_note": "bigger small town core, ~6.9 km2 box (about 2x Kane)",
+  "world_id": "bradford-pa-core",
+  "data_file": "data/world/bradford.js",
+  "osm_source": "data/osm/bradford/bradford-core.osm.xml",
+  "region": "data/regions/nwpa-bradford-region.geojson",
+  "bbox": [-78.6634, 41.9460, -78.6260, 41.9659],
+  "tile_meters": 4,
+  "seats": { "villains": 21, "masters": 7, "registry_days": [29, 56] },
+  "shrines": [
+    { "key": "void", "seed_id": "L02-V02", "name": "Void Shrine", "teaches": "Develop. Do not raid the queen.", "ability": null },
+    { "key": "chronos", "seed_id": "L02-V03", "name": "Chronos Shrine", "teaches": "Need the pawn, not the loop.",
+      "ability": { "id": "chronos_knight_drop", "trigger": "White's 8th move", "effect": "plant_knight_empty_dark_square", "sentence": "At White's 8th move, Chronos plants a knight on an empty dark square." } }
+  ],
+  "gate": { "opens_when": ["void", "chronos"] },
+  "closer_seed_id": "L02-M07",
+  "landmark_picks": {
+    "spawn":   { "kinds": ["library", "townhall", "post_office"] },
+    "void":    { "kinds": ["park", "playground"] },
+    "chronos": { "kinds": ["historic", "museum", "clock", "monument", "memorial"], "name_hint": ["histor", "museum", "clock"] },
+    "closer":  { "kinds": ["community_centre", "townhall", "theatre", "arts_centre", "stadium"] }
+  },
+  "unlock": { "requires_item": "ticket-bus-kane-bradford", "from_level": 1 },
+  "reward_on_closer": { "item": "pass-rail-l3" }
+}

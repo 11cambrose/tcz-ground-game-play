@@ -1,0 +1,12 @@
+TCZ Ground Game V2.1 (offline) - Level 1 Kane, PA -> Level 2 Bradford, PA
+1. Double-click index.html (opens in Safari or Chrome). No internet or server needed.
+   Or double-click "Open TCZ Ground Game.app" (first time: right-click > Open if macOS warns).
+2. Click the map, then walk Kane's streets with Arrow keys or WASD (hold to keep walking).
+   Press E next to a challenger. Seats sit at real landmarks; the gold arrow points to the current quest.
+3. Clear the Void shrine (Evergreen Park) and the Chronos shrine (Historical Society) to open the gate
+   at the Community Center, then beat the closer L01-M07. That earns a bus ticket: press T or use the
+   Travel panel to ride to Level 2, Bradford.
+4. One new seed per day. The Debug panel has the Rule 2 extras stub, travel, "ignore daily limit" and "advance day".
+5. Save is automatic (browser localStorage). Save panel: export / import / reset.
+Note: progress lives in the browser you play in. Safari and Chrome keep separate saves.
+Map data (c) OpenStreetMap contributors, ODbL 1.0 - https://www.openstreetmap.org/copyright

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>[TCZ] Ground Game V2.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+<header><b>[TCZ] Ground Game</b> <span class="dim">V2.1 · 64-level road from Kane, PA · offline</span></header>
+<main>
+  <section id="world">
+    <canvas id="map" width="672" height="384" tabindex="0" aria-label="Walkable map"></canvas>
+    <div id="hint" class="dim">Arrows / WASD to walk (hold to keep walking) · <b>E</b> to sit at a seat · <b>T</b> to travel when you hold a ticket · follow the gold arrow for the current quest · map data © OpenStreetMap contributors (ODbL)</div>
+    <div id="toast"></div>
+    <div id="cineCards" aria-live="polite"></div>
+    <div id="cineOverlay" hidden></div>
+  </section>
+  <aside id="side">
+    <div class="card" id="wallets"></div>
+    <div class="card" id="inspector"></div>
+    <div class="card" id="quests"></div>
+    <div class="card" id="inventory"></div>
+    <details class="card"><summary>Debug · Rule 2 · travel</summary>
+      <label><input type="checkbox" id="dbgIgnore"> Ignore daily seed limit (test mode)</label>
+      <div class="row"><button id="dbgNextDay">Advance one day</button><button id="dbgToday">Back to real today</button><button id="dbgSpawn">Back to spawn</button></div>
+      <hr><b>Rule 2 stub</b> <span class="dim">(real-world tasks → extra seeds today; expire at local midnight)</span>
+      <label><input type="checkbox" id="r2Sponsor"> sponsor today</label>
+      <label><input type="checkbox" id="r2Hotspot"> hotspot sync today</label>
+      <div class="row"><input type="number" id="r2Claim" value="3" min="0" max="20"> <button id="r2Grant">Claim extras</button></div>
+      <hr><b>Travel today</b> <span class="dim">(fare from cash wallet, once per day)</span>
+      <div class="row"><select id="travelSel"></select><button id="travelGo">Declare</button></div>
+    </details>
+    <details class="card"><summary>Save</summary>
+      <div class="row"><button id="saveExport">Export save (.json)</button><button id="saveReset" class="danger">Reset save</button></div>
+      <textarea id="saveText" rows="4" placeholder="Paste a save JSON here to import"></textarea>
+      <button id="saveImport">Import pasted save</button>
+    </details>
+    <details class="card"><summary>Credits</summary><p class="dim">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>, ODbL 1.0. Chess rules: chess.js (BSD-2). Characters: TCZ character registry (draft rows are marked).</p></details>
+    <details class="card"><summary>64 world-levels</summary><ol id="levels"></ol></details>
+  </aside>
+</main>
+<div id="modal" hidden>
+  <div id="duel">
+    <div id="duelHead"></div>
+    <div id="boardWrap"><div id="board"></div></div>
+    <div id="duelStatus"></div>
+    <div class="row"><button id="resignBtn" class="danger">Resign (counts as a loss)</button><button id="closeBtn" hidden>Back to the map</button></div>
+  </div>
+</div>
+<script src="vendor/chess.js"></script>
+<script src="data/seeds.js"></script>
+<script src="data/levels.js"></script>
+<script src="data/published.js"></script>
+<script src="data/characters.js"></script>
+<script src="src/rules.js"></script>
+<script src="src/sprite.js"></script>
+<script src="src/engine.js"></script>
+<script src="src/save.js"></script>
+<script src="src/published.js"></script>
+<script src="src/events.js"></script>
+<script src="cinematics/scenes/manifest.js"></script>
+<script src="src/cinematics.js"></script>
+<script src="src/mapprovider.js"></script>
+<script src="src/camera.js"></script>
+<script src="src/characters.js"></script>
+<script src="src/placement.js"></script>
+<script src="src/game.js"></script>
+</body>
+</html>
