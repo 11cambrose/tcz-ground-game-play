@@ -68,3 +68,10 @@ html,body{overscroll-behavior:none}
 #side::-webkit-scrollbar-track,#duel::-webkit-scrollbar-track,.found::-webkit-scrollbar-track{background:#0b140e;border-left:1px solid var(--line)}
 #side::-webkit-scrollbar-thumb,#duel::-webkit-scrollbar-thumb,.found::-webkit-scrollbar-thumb{background:#8a7440;border:3px solid #0b140e;border-radius:8px;min-height:40px}
 #side::-webkit-scrollbar-thumb:hover,#duel::-webkit-scrollbar-thumb:hover,.found::-webkit-scrollbar-thumb:hover{background:var(--lamp)}
+
+/* ---- V2.2.2: camera zoom buttons; no iOS selection/callout/page-zoom on game UI ---- */
+#map{touch-action:none}
+body{touch-action:manipulation}
+header,#world,#pad,#zoomBtns,#map,#hint,.hbtns,#tabs{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+#zoomBtns{position:absolute;top:4px;left:6px;display:flex;gap:3px;z-index:4}
+#zoomBtns button{width:26px;height:26px;padding:0;font:bold 16px/1 Helvetica,Arial,sans-serif;background:#000a;border:1px solid var(--lamp);color:var(--lamp);border-radius:5px;touch-action:manipulation}

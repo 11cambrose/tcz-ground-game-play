@@ -1,4 +1,4 @@
-/* TCZ Ground Game V2.2.1 — level-aware town worlds (MapProvider + level manifests), follow camera, minimap,
+/* TCZ Ground Game V2.2.2 — level-aware town worlds (MapProvider + level manifests), follow camera, minimap,
    registry-keyed challengers, journal HUD, travel elements, CinematicDirector beat slots. */
 (function () {
   'use strict';
@@ -56,6 +56,15 @@
 
   var COLORS = ['#1a2a1d', '#3b3d3c', '#7d776a', '#8a5a3c', '#2e6b3b', '#2f5f93', '#5b4632', '#4b4d55', '#a08f68', '#6b2a27', '#3f7d46', '#050a07', '#6f6a5c'];
   var cv = document.getElementById('map'), ctx = cv.getContext('2d');
+  // ---------- V2.2.2 camera zoom (pinch / ctrl-wheel / +- buttons); clamped, persisted, camera keeps following ----------
+  var ZMIN = 0.75, ZMAX = 3, Z = 1;
+  function zoomPref() { try { var v = parseFloat(localStorage.getItem('tcz-ui-zoom')); if (v >= ZMIN && v <= ZMAX) return v; } catch (e) {} return Math.min(window.innerWidth, window.innerHeight) < 600 ? 2 : 1; }
+  function setZoom(z, keep) {
+    Z = Math.round(Math.max(ZMIN, Math.min(ZMAX, z)) * 100) / 100;
+    VIEW_W = Math.ceil(cv.width / (PX * Z)); VIEW_H = Math.ceil(cv.height / (PX * Z)); cam.vw = VIEW_W; cam.vh = VIEW_H;
+    if (!keep) { try { localStorage.setItem('tcz-ui-zoom', String(Z)); } catch (e) {} }
+    draw(); return Z;
+  }
   // minimap: pre-rendered once (1 px per 3 tiles) — cheap per frame
   var MM_SCALE = 3, mm = document.createElement('canvas'); mm.width = Math.ceil(MAP.width / MM_SCALE); mm.height = Math.ceil(MAP.height / MM_SCALE);
   (function () { var c = mm.getContext('2d'), img = c.createImageData(mm.width, mm.height);
@@ -82,6 +91,8 @@
   function draw() {
     cam.follow(player.x, player.y);
     var x0 = cam.x, y0 = cam.y;
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = '#102017'; ctx.fillRect(0, 0, cv.width, cv.height);
+    ctx.setTransform(Z, 0, 0, Z, 0, 0);
     for (var y = 0; y < VIEW_H; y++) for (var x = 0; x < VIEW_W; x++) {
       var code = MAP.tile(x0 + x, y0 + y); ctx.fillStyle = COLORS[code] || '#000'; ctx.fillRect(x * PX, y * PX, PX, PX);
       if (code === 3) { ctx.fillStyle = '#a06c48'; ctx.fillRect(x * PX, y * PX, PX, 3); }
@@ -113,10 +124,11 @@
     // objective arrow when the target is off-screen
     var ob = objective();
     if (ob.target && !cam.visible(ob.target.x, ob.target.y)) {
-      var dx = ob.target.x - player.x, dy = ob.target.y - player.y, a = Math.atan2(dy, dx), cx = cv.width / 2, cy = cv.height / 2;
+      var dx = ob.target.x - player.x, dy = ob.target.y - player.y, a = Math.atan2(dy, dx), cx = cv.width / Z / 2, cy = cv.height / Z / 2;
       var ex = cx + Math.cos(a) * (cx - 22), ey = cy + Math.sin(a) * (cy - 22);
       ctx.save(); ctx.translate(ex, ey); ctx.rotate(a); ctx.fillStyle = '#ffd27a'; ctx.beginPath(); ctx.moveTo(10, 0); ctx.lineTo(-6, -7); ctx.lineTo(-6, 7); ctx.fill(); ctx.restore();
     }
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     // journal HUD
     var sum = R.levelSummary(save, DESK, LEVEL), sh = save.levels[LK].shrines, disc = (save.levels[LK].discovered || []).length;
     ctx.fillStyle = '#000000b0'; ctx.fillRect(6, 6, 300, 58);
@@ -305,9 +317,13 @@
     if (Date.now() - lastSaveMove > 1500) { persist(); lastSaveMove = Date.now(); }
     return true;
   }
+  function heldDir(keys) { // last horizontal + last vertical key -> diagonal when two directions are held
+    var dx = 0, dy = 0; for (var i = 0; i < keys.length; i++) { var d = DIRS[keys[i]]; if (d[0]) dx = d[0]; if (d[1]) dy = d[1]; } return [dx, dy];
+  }
+  function stepHeld(d) { if (d[0] && d[1]) return step(d) || step([d[0], 0]) || step([0, d[1]]); return step(d); } // diagonal slides along walls
   function loop(ts) {
     var keys = Object.keys(held); if (!keys.length || duel) { raf = 0; render(); return; }
-    if (ts - lastStep > 70) { lastStep = ts; step(DIRS[keys[keys.length - 1]]); draw(); }
+    if (ts - lastStep > 70) { lastStep = ts; stepHeld(heldDir(keys)); draw(); }
     raf = requestAnimationFrame(loop);
   }
   document.addEventListener('keydown', function (e) {
@@ -319,7 +335,19 @@
   });
   document.addEventListener('keyup', function (e) { delete held[e.code]; if (!Object.keys(held).length) { persist(); renderSide(); } });
   window.addEventListener('blur', function () { held = {}; });
-  cv.addEventListener('click', function () { cv.focus(); });
+  cv.addEventListener('click', function () { try { cv.focus({ preventScroll: true }); } catch (e) { cv.focus(); } });
+  // pinch on the canvas zooms the game camera, not the page (touch-action:none on #map)
+  var pinch = null;
+  function tdist(t) { return Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY); }
+  cv.addEventListener('touchstart', function (e) { if (e.touches.length === 2) { e.preventDefault(); pinch = { d: tdist(e.touches), z: Z }; } }, { passive: false });
+  cv.addEventListener('touchmove', function (e) { if (pinch && e.touches.length === 2) { e.preventDefault(); setZoom(pinch.z * tdist(e.touches) / pinch.d, true); } }, { passive: false });
+  cv.addEventListener('touchend', function (e) { if (pinch && e.touches.length < 2) { pinch = null; setZoom(Z); } });
+  cv.addEventListener('touchcancel', function () { if (pinch) { pinch = null; setZoom(Z); } });
+  ['gesturestart', 'gesturechange', 'gestureend'].forEach(function (t) { cv.addEventListener(t, function (e) { e.preventDefault(); }, { passive: false }); }); // iOS page-zoom gesture
+  cv.addEventListener('dblclick', function (e) { e.preventDefault(); });
+  cv.addEventListener('wheel', function (e) { if (!e.ctrlKey) return; e.preventDefault(); setZoom(Z * Math.exp(-e.deltaY * 0.01)); }, { passive: false });
+  $('zoomIn').addEventListener('click', function () { setZoom(Z * 1.25); });
+  $('zoomOut').addEventListener('click', function () { setZoom(Z / 1.25); });
   setInterval(function () { if (!raf && !duel && document.visibilityState === 'visible') draw(); }, 400); // marker bob, very light
 
   // ---------- debug / save controls ----------
@@ -347,10 +375,11 @@
   $('saveReset').onclick = function () { if (confirm('Reset all progress?')) { save = S.reset(storage, DESK, new Date()); R.login(save, DESK, now()); player.x = LAYOUT.spawn.x; player.y = LAYOUT.spawn.y; persist(); render(); toast('Save reset.'); } };
   LEVELS.levels.forEach(function (l) { var li = document.createElement('li'); li.textContent = l.level_id + ' · ' + l.tier + ' · ' + (l.town || 'planned') + ' · ×' + (l.area_factor > 1e6 ? l.area_factor.toExponential(1) : l.area_factor) + ' area' + (l.playable ? ' · playable' : ''); $('levels').appendChild(li); });
 
-  R.login(save, DESK, now()); persist(); render(); cv.focus();
+  setZoom(zoomPref(), true);
+  R.login(save, DESK, now()); persist(); render(); try { cv.focus({ preventScroll: true }); } catch (e) { cv.focus(); }
   CINE.play('levelEnter', { level: LEVEL, town: L1.town, seed: null, character: null }); discoverAround(); persist(); render();
   window.__tczDuelState = function () { return duel ? { fen: duel.chess.fen(), turn: duel.chess.turn(), pc: duel.pc, done: duel.done, dropped: duel.chronosDrop || null, whiteMoves: duel.whiteMoves } : null; };
-  window.__tcz = { level: LEVEL, levelDef: L1, travel: travel, get save() { return save; }, render: render, map: MAP, layout: LAYOUT, seats: seats, camera: cam, player: player, step: function (dx, dy) { var ok = step([dx, dy]); render(); return ok; },
+  window.__tcz = { get zoom() { return Z; }, setZoom: setZoom, level: LEVEL, levelDef: L1, travel: travel, get save() { return save; }, render: render, map: MAP, layout: LAYOUT, seats: seats, camera: cam, player: player, step: function (dx, dy) { var ok = step([dx, dy]); render(); return ok; },
     teleport: function (x, y) { player.x = x; player.y = y; discoverAround(); render(); },
     openDuelById: function (id) { for (var i = 0; i < seats.length; i++) if (seats[i].seed.seed_id === id) return openDuel(seats[i]); }, finishDuel: function (r) { if (duel) finish(r, false); } };
   }

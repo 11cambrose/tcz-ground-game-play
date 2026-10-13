@@ -9,7 +9,23 @@
   function releaseAll() { Object.keys(active).forEach(release); }
   function bind(btn) {
     var code = btn.getAttribute('data-key');
+    // iOS Safari: drive touch through touchstart/touchend (preventDefault stops selection, callout and page gestures);
+    // pointer events then handle mouse and pen only, so a touch never double-fires.
+    function tdown(e) {
+      e.preventDefault();
+      if (code === 'KeyE') { key('keydown', code); key('keyup', code); return; }
+      Array.prototype.forEach.call(e.changedTouches, function (t) { var id = 't' + t.identifier; release(id); active[id] = code; });
+      btn.classList.add('on'); key('keydown', code);
+    }
+    function tup(e) {
+      e.preventDefault();
+      Array.prototype.forEach.call(e.changedTouches, function (t) { var id = 't' + t.identifier; if (active[id] === code) release(id); });
+      btn.classList.remove('on');
+    }
+    btn.addEventListener('touchstart', tdown, { passive: false });
+    btn.addEventListener('touchend', tup, { passive: false }); btn.addEventListener('touchcancel', tup, { passive: false });
     btn.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'touch') return;
       e.preventDefault(); try { btn.setPointerCapture(e.pointerId); } catch (x) {}
       if (code === 'KeyE') { key('keydown', code); key('keyup', code); return; }
       release(e.pointerId); active[e.pointerId] = code; btn.classList.add('on'); key('keydown', code);
@@ -48,4 +64,11 @@
   if (window.ResizeObserver) { var ro = new ResizeObserver(post); ro.observe(doc.getElementById('app')); ro.observe(doc.getElementById('duel')); }
   new MutationObserver(post).observe(doc.getElementById('modal'), { attributes: true, attributeFilter: ['hidden'] });
   window.__tczControls = { releaseAll: releaseAll, active: active, post: post, isTouch: touch };
+})();
+/* V2.2.2: keep the zoom buttons in the map's bottom-left corner (clear of the journal HUD and minimap) */
+(function () {
+  var z = document.getElementById('zoomBtns'), m = document.getElementById('map'); if (!z || !m) return;
+  function place() { z.style.top = Math.max(0, m.offsetTop + m.offsetHeight - 32) + 'px'; z.style.left = (m.offsetLeft + 6) + 'px'; }
+  place(); window.addEventListener('resize', place); window.addEventListener('load', place);
+  if (window.ResizeObserver) new ResizeObserver(place).observe(m);
 })();
